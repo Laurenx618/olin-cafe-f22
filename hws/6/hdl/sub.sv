@@ -1,4 +1,4 @@
-module comparator_lt(a, b, out);
+module sub(a, b, out);
 parameter N = 32;
 input wire signed [N-1:0] a, b;
 output logic out;
