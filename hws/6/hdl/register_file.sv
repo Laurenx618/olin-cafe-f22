@@ -61,6 +61,7 @@ mux32 #(.N(N)) MUX_1 (
 decoder_5_to_32 #(.N(N)) decoder_0 (
   .ena(wr_ena), .in(wr_addr), .out(wr_data)
 );
+alu #(.N(N)) alu(.a(rd_data0), .b(rd_data1), .control(), .result(wr_data), .overflow(), .zero(), .equal())
 
 always_comb d = rst ? RESET : (ena ? d : q);
 always_ff @(posedge clk) begin

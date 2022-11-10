@@ -3,7 +3,7 @@
 
 `include "alu_types.sv"
 
-
+/*
 module comparator_lt(a, b, out);
 parameter N = 32;
 input wire signed [N-1:0] a, b;
@@ -17,19 +17,35 @@ adder_n #(.N(N)) add_b ( .a(~b), .b(31'd1), .c_in(1'b0), .sum(b_invert), .c_out(
 adder_n #(.N(N)) adder_32bit_a ( .a(a), .b(b_invert), .c_in(1'b0), .sum(sum), .c_out(c_out));
 always_comb out = sum;
 endmodule
+*/
 
-module sub(a, b, out);
+
+module comparator_lt(a, b, out);
 parameter N = 32;
 input wire signed [N-1:0] a, b;
 output logic out;
 
-logic [N-1:0] sum;
-logic [N-1:0] c_out_temp;
-logic [N-1:0] c_out;
-wire signed [N-1:0] b_invert;
-adder_n #(.N(N)) add_b ( .a(~b), .b(31'd1), .c_in(1'b0), .sum(b_invert), .c_out(c_out_temp));
-adder_n #(.N(N)) adder_32bit_a ( .a(a), .b(b_invert), .c_in(1'b0), .sum(sum), .c_out(c_out));
-always_comb out = sum;
+// Using only structural combinational logic, make a module that computes if a is less than b!
+// Note: this assumes that the two inputs are signed: aka should be interpreted as two's complement.
+
+// Copy any other modules you use into the HDL folder and update the Makefile accordingly.
+wire [N-1:0] sum;
+wire c_out;
+logic overflow;
+always_comb overflow = a[N-1] ^ b[N-1];
+
+logic [N-1:0] b_bar;
+always_comb b_bar = ~b;
+
+adder_n #(.N(N)) add(
+    .a(a),
+    .b(b_bar),
+    .c_in(1'b1),
+    .sum(sum),
+    .c_out(c_out)
+);
+
+always_comb out = (~overflow & sum[N-1]) | ( overflow & (~(~a[N-1] & b[N-1]) | (a[N-1] & ~b[N-1])) );
 endmodule
 
 
@@ -47,7 +63,7 @@ output logic equal; // is high if a == b.
 // Use *only* structural logic and previously defined modules to implement an 
 // ALU that can do all of operations defined in alu_types.sv's alu_op_code_t.
 
-logic [N-1:0] b_out, SLL_temp, SRL_temp, SRA_temp, ALU_AND, ALU_OR, ALU_XOR, ALU_ADD, ALU_SLL, ALU_SRL, ALU_SRA, ALU_SLT, ALU_SUB, ALU_SLTU;
+logic [N-1:0] b_out, SLL_temp, SRL_temp, SRA_temp, SLTU_temp, ALU_AND, ALU_OR, ALU_XOR, ALU_ADD, ALU_SLL, ALU_SRL, ALU_SRA, ALU_SLT, ALU_SUB, ALU_SLTU;
 logic carry, negative, lt;
 // assign carries[0] = c_in;
 wire c_out;
@@ -57,8 +73,11 @@ shift_left_logical #(.N(N)) sll(.in(a), .shamt(b), .out(SLL_temp));
 shift_right_logical #(.N(N)) srl(.in(a), .shamt(b), .out(SRL_temp));
 shift_right_arithmetic #(.N(N)) sra(.in(a), .shamt(b), .out(SRA_temp));
 adder_n #(.N(N)) adder_32bit_a (.a(a), .b(b_out), .c_in(control), .sum(ALU_ADD), .c_out(c_out));
-comparator_lt #(.N(N)) ls (.a(a), .b(b), .out(ALU_SLT));
-sub #(.N(N)) subtraction (.a(a), .b(b), .out(ALU_SUB));
+adder_n #(.N(N)) unsigned_comp(.a(a),.b(~b),.c_in(1'b1),.sum(),.c_out(SLTU_temp));
+adder_n #(.N(N)) subtraction(.a(a),.b(~b),.c_in(1'b1),.sum(ALU_SUB),.c_out());
+//comparator_lt #(.N(N)) ls (.a(a), .b(b), .out(ALU_SLT));
+comparator_lt #(.N(N)) compare(.a(a), .b(b), .out(ALU_SLT));
+
 
 always_comb begin
     lt = (b>32);
@@ -69,6 +88,7 @@ always_comb begin
     ALU_SLL = lt ? 32'b0 : SLL_temp;
     ALU_SRL = lt ? 32'b0 : SRL_temp;
     ALU_SRA = lt ? 32'b0 : SRA_temp;
+    ALU_SLTU = ~SLTU_temp;
 end
 
 
