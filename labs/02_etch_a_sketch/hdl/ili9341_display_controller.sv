@@ -196,7 +196,6 @@ always_ff @(posedge clk) begin : main_fsm
         case (cfg_state)
         // inside the initial state S_INIT, define the configuration states so that 
         // a) when the data size is received, set the cfg state ready to receive commands
-        // after
         // b) set the cfg state to wait for writing on the memory
           S_CFG_GET_DATA_SIZE : begin
             cfg_state_after_wait <= S_CFG_GET_CMD;

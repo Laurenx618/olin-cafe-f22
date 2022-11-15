@@ -149,7 +149,7 @@ ili9341_display_controller ILI9341(
   .vram_rd_addr(vram_rd_addr),
   .vram_rd_data(vram_rd_data),
   // !!! NOTE - change enable_test_pattern to zero once you start implementing the video ram !!!
-  .enable_test_pattern(1'b1) 
+  .enable_test_pattern(1'b0) 
 );
 
 /* ------------------------------------------------------------------------- */
@@ -183,65 +183,70 @@ block_ram #(.W(VRAM_W), .L(VRAM_L)) VRAM(
 );
 // Add your vram control FSM here:
 
-typedef enum logic [2:0] {CLEAR, WRITE, IDLE} state_t;
+
+typedef enum logic [2:0] {S_CLEAR, S_WRITE, S_IDLE, S_ERROR} state_t;
 state_t state;
 
-adder_n #(.N($clog2(VRAM_L))) adder (.a(-1), .b(vram_wr_addr), .c_in(1'b0), .sum(vram_wr_addr_pp), .c_out());
-
-
 always_ff @(posedge clk) begin 
-    case (state)
-    CLEAR: begin
+  if (rst) state <= S_CLEAR;
+  else case (state)
+    S_CLEAR: begin
       vram_wr_addr <= vram_clear_counter;
-      vram_wr_ena <= 1;
       vram_wr_data <= BLACK;
     end
-    WRITE: begin
+    S_WRITE: begin
       vram_wr_addr <= brush_x_y;
-      vram_wr_ena <= 1;
       vram_wr_data <= WHITE;
     end
-    IDLE: begin
+    S_IDLE: begin
       vram_wr_addr <= 0;
-      vram_wr_ena <= 0;
     end
-    default : state <= IDLE;
+    default : state <= S_ERROR;
   endcase
 end
 
 always_comb begin
-  if (rst) state = CLEAR;
-  else case (state)
-    CLEAR: begin
-      if (touch0.valid) state = WRITE;
-      else if (touch0.valid) state <= IDLE;
+  case (state)
+    S_CLEAR: begin
+      if (touch0.valid) begin
+        state = S_WRITE;
+        vram_wr_ena = 1;
+      end else begin
+        state = S_IDLE;
+        vram_wr_ena = 0;
+      end
     end
-    WRITE: begin
-      if (~touch0.valid) state = IDLE;
-      else state = WRITE;
+    S_WRITE: begin
+      if (touch0.valid) begin
+        vram_wr_ena = 1;
+      end else begin
+        state = S_IDLE;
+        vram_wr_ena = 0;
+      end
     end
-    IDLE: begin
-      if (touch0.valid) state = WRITE;
-      else state = IDLE;
+    S_IDLE: begin
+      if (touch0.valid) begin 
+        state = S_WRITE;
+        vram_wr_ena = 1;
+      end
     end
-    default : state = IDLE;
+    default : state = S_ERROR;
   endcase
 end
 
 
 always_comb begin
   vram_clear_counter = VRAM_L - 1;
-  brush_x_y = touch0.x * VRAM_W + touch0.y;
+  brush_x_y = touch0.y * DISPLAY_WIDTH + touch0.x;
   //if (vram_wr_ena == 1) 
 end
 
 always @(posedge clk) begin //counter
-  if (rst) state <= CLEAR;
+  if (rst) state <= S_CLEAR;
   else if (vram_wr_ena == 1) begin
-    if (vram_wr_addr > 0) vram_wr_addr <= vram_wr_addr_pp;
-    else state <= IDLE;
-  end else state <= IDLE;
+    if (vram_clear_counter > 0) vram_clear_counter <= vram_clear_counter - 1;
+    else state <= S_IDLE;
+  end else state <= S_IDLE;
   end
-
 
 endmodule

@@ -29,25 +29,25 @@ end
 always_comb begin
     count_is_0 = (counter_pp == 0);
     count_is_max = (counter_pp == {N{1'b1}});
-
-    case (state)
-        COUNTING_UP: begin
-            if (count_is_max) begin
-                next_state = COUNTING_DOWN;
-            end
-            else next_state = COUNTING_UP;
-        end
-        COUNTING_DOWN: begin
-            if (count_is_0) next_state = COUNTING_UP;
-            else next_state = COUNTING_DOWN;
-        end
-        default: next_state = COUNTING_UP;
-    endcase
 end
 
-always_ff @( posedge clk ) begin : blockName
-    if (rst) state <= 0;
-    else if (ena) state <= next_state;
+always @(posedge clk) begin
+    if (rst) state <= COUNTING_UP;
+    else if (ena) begin
+        case (state)
+            COUNTING_UP: begin
+                if (count_is_max) begin
+                    state <= COUNTING_DOWN;
+                end
+                else state <= COUNTING_UP;
+            end
+            COUNTING_DOWN: begin
+                if (count_is_0) state <= COUNTING_UP;
+                else state <= COUNTING_DOWN;
+            end
+            default: state <= COUNTING_UP;
+        endcase
+    end
 end
 
 endmodule

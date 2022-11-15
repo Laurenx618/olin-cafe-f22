@@ -1,0 +1,182 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.1 (lin64) Build 3526262 Mon Apr 18 15:47:01 MDT 2022
+| Date         : Mon Nov 14 23:51:51 2022
+| Host         : lauren-Latitude-5411 running 64-bit Ubuntu 20.04.5 LTS
+| Command      : report_timing -sort_by group -max_paths 100 -path_type summary -file timing.log -verbose
+| Design       : main
+| Device       : 7a35t-cpg236
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+----------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Startpoint                     Endpoint                       Slack(ns)     
+----------------------------------------------------------------------------
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ENBWREN    8.042         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[14]
+                                                              8.411         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ENBWREN       8.532         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[12]
+                                                              8.716         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[14]
+                                                              8.752         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[13]
+                                                              8.754         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[11]
+                                                              8.778         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[15]
+                                                              8.821         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[13]
+                                                              8.844         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[12]
+                                                              8.904         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ENBWREN       8.972         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[15]
+                                                              9.031         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[14]
+                                                              9.095         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[10]
+                                                              9.105         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[11]
+                                                              9.119         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[13]
+                                                              9.145         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[12]
+                                                              9.247         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[10]
+                                                              9.446         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[11]
+                                                              9.462         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[9]
+                                                              9.469         
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[0]/D  9.470         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[10]
+                                                              9.789         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[9]
+                                                              9.810         
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[1]/D  9.835         
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[8]
+                                                              9.949         
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[3]/D  10.005        
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[6]/D  10.042        
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[2]/D  10.051        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[7]
+                                                              10.063        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[9]
+                                                              10.153        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_mux_sel_b_pos_0/D 10.184        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[8]
+                                                              10.290        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[7]
+                                                              10.404        
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[7]/D  10.445        
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[4]/D  10.504        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[6]
+                                                              10.514        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_mux_sel_b_pos_1/D 10.539        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[8]
+                                                              10.633        
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[15]/D 10.704        
+PWM_LED1/counter_reg[8]/C      PWM_LED1/out_reg/D             10.706        
+VRAM/ram_reg_0_0/CLKBWRCLK     ILI9341/SPI0/tx_data_reg[5]/D  10.724        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[7]
+                                                              10.747        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[6]
+                                                              10.855        
+ILI9341/pixel_y_reg[0]/C       VRAM/ram_reg_1_0__0/ADDRBWRADDR[5]
+                                                              10.862        
+PWM_LED1/counter_reg[8]/C      PWM_LED1/out_reg/CE            11.032        
+LED_FADER0/out_reg[0]/C        PWM_LED0/out_reg/CE            11.101        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[18]/R   11.108        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[19]/R   11.108        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[20]/R   11.108        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[21]/R   11.181        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[22]/R   11.181        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[23]/R   11.181        
+ILI9341/pixel_y_reg[1]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[6]
+                                                              11.198        
+ILI9341/pixel_y_reg[0]/C       VRAM/ram_reg_1_0/ADDRBWRADDR[5]
+                                                              11.203        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[11]/R  11.257        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[17]/R  11.273        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[18]/R  11.273        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[19]/R  11.273        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[20]/R  11.273        
+LED_FADER0/out_reg[0]/C        PWM_LED0/out_reg/D             11.301        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[3]/CE
+                                                              11.349        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[4]/CE
+                                                              11.349        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[5]/CE
+                                                              11.349        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[7]/CE
+                                                              11.349        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[12]/R  11.354        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[13]/R  11.354        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[14]/R  11.354        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[1]/R   11.372        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[2]/R   11.372        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[3]/R   11.372        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[4]/R   11.372        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[5]/R   11.372        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[15]/R  11.415        
+PULSE_100Hz/counter_reg[2]/C   PULSE_100Hz/counter_reg[16]/R  11.415        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[1]/R    11.453        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[2]/R    11.453        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[3]/R    11.453        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[4]/R    11.453        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[5]/R    11.453        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[10]/CE
+                                                              11.488        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[11]/CE
+                                                              11.488        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[12]/CE
+                                                              11.488        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[15]/CE
+                                                              11.488        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[8]/CE
+                                                              11.488        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[9]/CE
+                                                              11.488        
+ILI9341/rom_addr_reg_rep/CLKARDCLK
+                               ILI9341/cfg_state_reg[1]/D     11.497        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[16]/CE
+                                                              11.499        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[1]/CE
+                                                              11.499        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[2]/CE
+                                                              11.499        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[6]/CE
+                                                              11.499        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[16]/R   11.502        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[17]/R   11.502        
+PULSE_10Hz/counter_reg[0]/C    PULSE_10Hz/counter_reg[21]/D   11.504        
+PULSE_10Hz/counter_reg[0]/C    PULSE_10Hz/counter_reg[22]/D   11.509        
+PWM_LED1/counter_reg[1]/C      PWM_LED1/counter_reg[0]/R      11.514        
+PWM_LED1/counter_reg[1]/C      PWM_LED1/counter_reg[1]/R      11.514        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/data_commandb_reg/CE   11.526        
+ILI9341/pixel_y_reg[0]/C       VRAM/ram_reg_0_0/ADDRBWRADDR[5]
+                                                              11.546        
+ILI9341/cfg_delay_counter_reg[21]/C
+                               ILI9341/cfg_delay_counter_reg[0]/CE
+                                                              11.563        
+PULSE_10Hz/counter_reg[18]/C   PULSE_10Hz/counter_reg[0]/R    11.586        
+
+
+

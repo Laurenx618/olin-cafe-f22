@@ -1,0 +1,36 @@
+#-----------------------------------------------------------
+# Vivado v2022.1 (64-bit)
+# SW Build 3526262 on Mon Apr 18 15:47:01 MDT 2022
+# IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+# Start of session at: Mon Nov 14 23:36:12 2022
+# Process ID: 318799
+# Current directory: /home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch
+# Command line: vivado -mode batch -source build.tcl
+# Log file: /home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/vivado.log
+# Journal file: /home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/vivado.jou
+# Running On: lauren-Latitude-5411, OS: Linux, CPU Frequency: 2700.000 MHz, CPU Physical cores: 6, Host memory: 16361 MB
+#-----------------------------------------------------------
+source build.tcl
+# read_verilog [ glob ./hdl/*.sv ]
+# read_xdc ./main.xdc
+# synth_design -top main -part xc7a35tcpg236-1
+Command: synth_design -top main -part xc7a35tcpg236-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t'
+INFO: [Device 21-403] Loading part xc7a35tcpg236-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 318903
+WARNING: [Synth 8-6901] identifier 'vram_rd_data_valid' is used before its declaration [/home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/hdl/ili9341_display_controller.sv:131]
+ERROR: [Synth 8-36] 'CLEAR' is not declared [/home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/hdl/main.sv:254]
+ERROR: [Synth 8-36] 'CLEAR' is not declared [/home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/hdl/main.sv:289]
+ERROR: [Synth 8-36] 'IDLE' is not declared [/home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/hdl/main.sv:292]
+ERROR: [Synth 8-36] 'IDLE' is not declared [/home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/hdl/main.sv:293]
+INFO: [Synth 8-8750] module 'main' ignored due to previous errors [/home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/hdl/main.sv:296]
+Failed to read verilog '/home/lauren/Desktop/olin-cafe-f22/labs/02_etch_a_sketch/hdl/main.sv'
+INFO: [Common 17-83] Releasing license: Synthesis
+7 Infos, 1 Warnings, 0 Critical Warnings and 5 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
+INFO: [Common 17-206] Exiting Vivado at Mon Nov 14 23:36:26 2022...
