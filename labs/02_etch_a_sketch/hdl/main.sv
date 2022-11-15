@@ -173,7 +173,7 @@ ft6206_controller #(.CLK_HZ(CLK_HZ), .I2C_CLK_HZ(400_000)) FT6206(
 /* -- Part 3 - Using Video RAM to make an etch a sketch                  --  */
 /* ------------------------------------------------------------------------- */
 wire [$clog2(VRAM_L)-1:0] vram_rd_addr;
-logic [$clog2(VRAM_L)-1:0] vram_wr_addr, vram_clear_counter;
+logic [$clog2(VRAM_L)-1:0] vram_wr_addr, vram_clear_counter, vram_wr_addr_pp, brush_x_y;
 logic vram_wr_ena;
 ILI9341_color_t vram_wr_data;
 
@@ -182,5 +182,66 @@ block_ram #(.W(VRAM_W), .L(VRAM_L)) VRAM(
   .wr_ena(vram_wr_ena), .wr_addr(vram_wr_addr), .wr_data(vram_wr_data)
 );
 // Add your vram control FSM here:
+
+typedef enum logic [2:0] {CLEAR, WRITE, IDLE} state_t;
+state_t state;
+
+adder_n #(.N($clog2(VRAM_L))) adder (.a(-1), .b(vram_wr_addr), .c_in(1'b0), .sum(vram_wr_addr_pp), .c_out());
+
+
+always_ff @(posedge clk) begin 
+    case (state)
+    CLEAR: begin
+      vram_wr_addr <= vram_clear_counter;
+      vram_wr_ena <= 1;
+      vram_wr_data <= BLACK;
+    end
+    WRITE: begin
+      vram_wr_addr <= brush_x_y;
+      vram_wr_ena <= 1;
+      vram_wr_data <= WHITE;
+    end
+    IDLE: begin
+      vram_wr_addr <= 0;
+      vram_wr_ena <= 0;
+    end
+    default : state <= IDLE;
+  endcase
+end
+
+always_comb begin
+  if (rst) state = CLEAR;
+  else case (state)
+    CLEAR: begin
+      if (touch0.valid) state = WRITE;
+      else if (touch0.valid) state <= IDLE;
+    end
+    WRITE: begin
+      if (~touch0.valid) state = IDLE;
+      else state = WRITE;
+    end
+    IDLE: begin
+      if (touch0.valid) state = WRITE;
+      else state = IDLE;
+    end
+    default : state = IDLE;
+  endcase
+end
+
+
+always_comb begin
+  vram_clear_counter = VRAM_L - 1;
+  brush_x_y = touch0.x * VRAM_W + touch0.y;
+  //if (vram_wr_ena == 1) 
+end
+
+always @(posedge clk) begin //counter
+  if (rst) state <= CLEAR;
+  else if (vram_wr_ena == 1) begin
+    if (vram_wr_addr > 0) vram_wr_addr <= vram_wr_addr_pp;
+    else state <= IDLE;
+  end else state <= IDLE;
+  end
+
 
 endmodule

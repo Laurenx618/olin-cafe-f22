@@ -24,6 +24,7 @@ output wire scl;
 inout wire sda;
 output touch_t touch0, touch1;
 
+// make variables for the i2c controller module
 i2c_transaction_t i2c_mode;
 wire i_ready;
 logic i_valid;
@@ -33,7 +34,7 @@ logic o_ready;
 wire o_valid;
 wire [7:0] o_data;
 
-
+// encorporates i2c controller
 i2c_controller #(.CLK_HZ(CLK_HZ), .I2C_CLK_HZ(I2C_CLK_HZ)) I2C0 (
   .clk(clk), .rst(rst), 
   .scl(scl), .sda(sda),
@@ -43,9 +44,9 @@ i2c_controller #(.CLK_HZ(CLK_HZ), .I2C_CLK_HZ(I2C_CLK_HZ)) I2C0 (
 
 // Main fsm
 enum logic [4:0] {
-  S_IDLE = 0,
-  S_INIT = 1,
-  S_WAIT_FOR_I2C_WR = 2,
+  S_IDLE = 0, //when the screen is not being touched
+  S_INIT = 1, //initial state
+  S_WAIT_FOR_I2C_WR = 2, 
   S_WAIT_FOR_I2C_RD = 3,
   S_SET_THRESHOLD_REG = 4,
   S_SET_THRESHOLD_DATA = 5,
@@ -59,9 +60,11 @@ enum logic [4:0] {
 
 logic [1:0] num_touches;
 touch_t touch0_buffer, touch1_buffer;
+// buffers enable a faster rate of transmission 
 logic [$clog2(N_RD_BYTES):0] bytes_counter;
 
 always_ff @(posedge clk) begin
+  // Setting state to S_INIT and return all the parameters back to zero when the reset button is pushed
   if(rst) begin
     state <= S_INIT;
     state_after_wait <= S_IDLE;
@@ -74,8 +77,8 @@ always_ff @(posedge clk) begin
   end else begin
     case(state)
       S_IDLE : begin
-        if(i_ready & ena)
-          active_register <= TD_STATUS;
+        if(i_ready & ena) //to check if ena is on and if the touch screen is ready to receive data
+          active_register <= TD_STATUS; 
           state <= S_GET_REG_REG;
       end
       S_INIT : begin
@@ -98,14 +101,14 @@ always_ff @(posedge clk) begin
         state_after_wait <= S_GET_REG_DONE;
       end
       S_GET_REG_DONE: begin
-        if(~o_valid) begin
+        if(~o_valid) begin //if the screen is not outputing anything
           state <= S_IDLE;
         end
-        else begin
-          active_register <= active_register.next;
+        else begin //if the screen is being touched
+          active_register <= active_register.next; //register remains active on the next cycle
           case(active_register)
             TD_STATUS: begin
-              num_touches <= |o_data[3:2] ? 0 : o_data[1:0];
+              num_touches <= |o_data[3:2] ? 0 : o_data[1:0]; //use the less significant bits to detect the number of touches on the screen
               if(o_data[3:0] == 4'd2) begin
                 touch0_buffer.valid <= 1;
                 touch1_buffer.valid <= 1;

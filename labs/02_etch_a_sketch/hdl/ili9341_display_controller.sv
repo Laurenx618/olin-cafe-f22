@@ -77,8 +77,8 @@ block_rom #(.INIT("memories/ili9341_init.memh"), .W(8), .L(ROM_LENGTH)) ILI9341_
 
 // Main FSM
 enum logic [2:0] {
-  S_INIT = 0,
-  S_INCREMENT_PIXEL = 1,
+  S_INIT = 0, //setting up the initial state
+  S_INCREMENT_PIXEL = 1, //
   S_START_FRAME = 2,
   S_TX_PIXEL_DATA_START = 3,
   S_TX_PIXEL_DATA_BUSY = 4,
@@ -110,10 +110,10 @@ ILI9341_register_t current_command;
 */
 
 always_comb case(state)
-  S_START_FRAME, S_TX_PIXEL_DATA_START : i_valid = 1;
+  S_START_FRAME, S_TX_PIXEL_DATA_START : i_valid = 1; // enable the screen to display when the input is ready
   S_INIT : begin
-    case(cfg_state)
-      S_CFG_SEND_CMD, S_CFG_SEND_DATA: i_valid = 1;
+    case(cfg_state) 
+      S_CFG_SEND_CMD, S_CFG_SEND_DATA: i_valid = 1; // send 
       default: i_valid = 0;
     endcase
   end
@@ -178,12 +178,12 @@ end
 logic [$clog2(CFG_CMD_DELAY):0] cfg_delay_counter;
 logic [7:0] cfg_bytes_remaining;
 
-always_ff @(posedge clk) begin : main_fsm
-  if(rst) begin
+always_ff @(posedge clk) begin : main_fsm 
+  if(rst) begin //setting everything to initial state when the reset button is pressed
     state <= S_INIT;
-    cfg_state <= S_CFG_GET_DATA_SIZE;
+    cfg_state <= S_CFG_GET_DATA_SIZE; //I WONDER WHAT GET_DATA_SIZE IS DOING
     cfg_state_after_wait <= S_CFG_GET_DATA_SIZE;
-    cfg_delay_counter <= 0;
+    cfg_delay_counter <= 0; 
     state_after_wait <= S_INIT;
     pixel_x <= 0;
     pixel_y <= 0;
@@ -194,6 +194,10 @@ always_ff @(posedge clk) begin : main_fsm
     case (state)
       S_INIT: begin
         case (cfg_state)
+        // inside the initial state S_INIT, define the configuration states so that 
+        // a) when the data size is received, set the cfg state ready to receive commands
+        // after
+        // b) set the cfg state to wait for writing on the memory
           S_CFG_GET_DATA_SIZE : begin
             cfg_state_after_wait <= S_CFG_GET_CMD;
             cfg_state <= S_CFG_MEM_WAIT;
@@ -214,6 +218,7 @@ always_ff @(posedge clk) begin : main_fsm
               end
             endcase
           end
+          // when a command is received, set the state to wait for writing memory
           S_CFG_GET_CMD: begin
             cfg_state_after_wait <= S_CFG_SEND_CMD;
             cfg_state <= S_CFG_MEM_WAIT;
@@ -227,6 +232,7 @@ always_ff @(posedge clk) begin : main_fsm
               cfg_state_after_wait <= S_CFG_GET_DATA;
             end
           end
+          // when the data starts to get received
           S_CFG_GET_DATA: begin
             data_commandb <= 1;
             rom_addr <= rom_addr + 1;
@@ -261,12 +267,12 @@ always_ff @(posedge clk) begin : main_fsm
           default: cfg_state <= S_CFG_DONE;
         endcase
       end
-      S_WAIT_FOR_SPI: begin
+      S_WAIT_FOR_SPI: begin //wait for new data input from SPI
         if(i_ready) begin
           state <= state_after_wait;
         end
       end
-      S_START_FRAME: begin
+      S_START_FRAME: begin //
         data_commandb <= 0;
         state <= S_WAIT_FOR_SPI;
         state_after_wait <= S_TX_PIXEL_DATA_START;
